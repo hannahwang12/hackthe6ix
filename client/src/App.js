@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
-import SignupComponent from './components/SignupComponent.js';
 import LoginComponent from './components/LoginComponent.js';
-import ChatbotContainer from './containers/chatbot.js'
+import SignupComponent from './components/SignupComponent.js';
 
 class App extends Component {
   constructor(props) {
@@ -41,10 +40,9 @@ class App extends Component {
     return (
       <div className="App">
         <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
-        <SignupComponent display={(this.state.signup || !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
+        <SignupComponent display={(this.state.signup || ! ythis.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
         <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
         <button onClick={this.signUp} style={{display: (this.state.signup || !this.state.loggined)?"block":"none"}} className="loginButton">Back</button>
-        <ChatbotContainer/>
       </div> 
   
     );
