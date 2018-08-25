@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
-import './components/LoginComponent.js'
 import LoginComponent from './components/LoginComponent.js';
+import ChatbotContainer from './containers/chatbot.js'
 
 class App extends Component {
   constructor(props) {
@@ -27,8 +27,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <p>hello</p>
         <LoginComponent loginSubmit={this.loginSubmit}/>
+        <ChatbotContainer/>
       </div> 
   
     );
