@@ -4,6 +4,8 @@ import axios from 'axios';
 import './App.css';
 import LoginComponent from './components/LoginComponent.js';
 import SignupComponent from './components/SignupComponent.js';
+import ChatbotContainer from './containers/chatbot.js'
+import DashboardContainer from './containers/dashboard.js';
 
 class App extends Component {
   constructor(props) {
@@ -72,6 +74,15 @@ class App extends Component {
     }
   }
 
+  audioSubmit = (blob) => {
+    console.log(blob);
+    axios.get(this.url + "/audio?blob=" + blob.blobURL).then(response => {
+      this.results = response.data;
+      // this.setState({searching: false});
+      // this.setState({searched: true});
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -85,6 +96,8 @@ class App extends Component {
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
+        <ChatbotContainer audioSubmit={this.audioSubmit}/>
+        <DashboardContainer/>
       </div> 
   
     );
