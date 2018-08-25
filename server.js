@@ -33,7 +33,7 @@ app.get("/authenticate", async (req, res) => {
 	let password = req.query.password;
 	user_data.push(username);
 	user_data.push(password);
-})
+});
 
 app.listen(port);
 
