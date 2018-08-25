@@ -32,8 +32,8 @@ app.get("/authenticate", async (req, res) => {
   //console.log(req);
 	let username = req.query.username;
 	let password = req.query.password;
-	user_data.push(username);
-	user_data.push(password);
+	user_identities.push(username);
+	user_identities.push(password);
 });
 
 app.use(cors({origin: 'http://localhost:3000'}));
