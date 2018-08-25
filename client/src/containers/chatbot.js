@@ -43,7 +43,7 @@ class ChatbotContainer extends Component {
 
   render() {
     return (
-      <div className="chatbot">
+      <div className="chatbot" style={{display: this.props.display}}>
         {/* <div>
           <ReactMic
             record={this.state.record}
