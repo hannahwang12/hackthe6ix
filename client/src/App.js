@@ -11,6 +11,7 @@ class App extends Component {
     this.state = {
       signup: false,
       loggedin: false,
+      error: false,
     };
     this.url = "http://localhost:8080"
     this.username = '';
@@ -26,7 +27,12 @@ class App extends Component {
 
   loginSubmit = (user, pass) => {
     axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
-      this.results = response.data;
+      var results = response.data;
+      if (results === "valid") {
+        this.setState({ loggedin: user, error: false });
+      } else {
+        this.setState({ error: true });
+      }
       // this.setState({searching: false});
       // this.setState({searched: true});
     });
@@ -37,14 +43,13 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.loggedin || this.state.signup);
-    console.log(!this.state.signup && !this.state.loggedin);
     return (
       <div className="App">
         <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
         <SignupComponent display={(this.state.signup && !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
         <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
         <button onClick={this.signUp} style={{display: (this.state.signup && !this.state.loggedin)?"block":"none"}} className="loginButton">Back</button>
+        <p style={{display: this.state.error?"block":"none"}}>Bad username or password (in friendly terms)</p>
       </div> 
   
     );
