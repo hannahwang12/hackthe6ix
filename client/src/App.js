@@ -37,12 +37,14 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.loggedin || this.state.signup);
+    console.log(!this.state.signup && !this.state.loggedin);
     return (
       <div className="App">
         <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
-        <SignupComponent display={(this.state.signup || ! ythis.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
+        <SignupComponent display={(this.state.signup && !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
         <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
-        <button onClick={this.signUp} style={{display: (this.state.signup || !this.state.loggined)?"block":"none"}} className="loginButton">Back</button>
+        <button onClick={this.signUp} style={{display: (this.state.signup && !this.state.loggedin)?"block":"none"}} className="loginButton">Back</button>
       </div> 
   
     );
