@@ -2,7 +2,7 @@
   "name": "hackthe6ix",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "client/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "firebase": "^5.4.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "request": "^2.88.0"
   }
 }

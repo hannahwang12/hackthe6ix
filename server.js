@@ -26,10 +26,10 @@ const user_data = firebase.app().database().ref().child("user_data");
 const user_identities = firebase.app().database().ref().child("user_identities");
 const cg_identities = firebase.app().database().ref().child("cg_identities");
 
-// uw.classwatch.notif@gmail.com
-// UWclasswatch!
 app.get("/authenticate", async (req, res) => {
-	let username = req.query.user;
+//app.post("/authenticate", async (req, res) => {
+  console.log(req);
+	let username = req.query.username;
 	let password = req.query.password;
 	user_data.push(username);
 	user_data.push(password);
