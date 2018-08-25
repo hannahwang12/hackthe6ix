@@ -56,7 +56,7 @@ iterateWords = (word, freq) => {
     Atlantic: 10,
     crossing: 1 }
     return (
-      <div>
+      <div style={{display: this.props.display}}>
         <h1>Dashboard</h1>
         <div>Overview</div>
         <div>Graph</div>

@@ -101,15 +101,33 @@ app.use(cors({origin: 'http://localhost:3000'}));
 app.get("/signup", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
   //console.log(req);
-	let username = req.query.username;
-	let password = req.query.password;
+  var exists = 0;
+  let username = req.query.username;
+  let password = req.query.password;
   let email = req.query.email;
-  const min = 10000000000000;
-  const max = 99999999999999;
-  const num = Math.floor(Math.random() * (max - min + 1)) + min;
-	user_identities.child(username).push(password);
-  user_identities.child(username).push(email);
-  user_identities.child(username).push(num);
+  await user_identities.once('value', async function(data) {
+    if (data.val()) {
+      var usernames = Object.keys(data.val());
+      exists = usernames.indexOf(username);
+    } else {
+      exists = -1;
+    }
+  });
+
+  if (exists > -1) {
+    res.status(200).send("exists");
+  } else {
+    const min = 10000000000000;
+    const max = 99999999999999;
+    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+  	user_identities.child(username).push(password);
+    user_identities.child(username).push(email);
+    user_identities.child(username).push(num);
+    cg_identities.child("admin-" + username).push(password);
+    cg_identities.child("admin-" + username).push(email);
+    cg_identities.child("admin-" + username).push(num);
+    res.sendStatus(200);
+  }
 });
 
 app.get("/authenticate", async (req, res) => {
@@ -118,6 +136,41 @@ app.get("/authenticate", async (req, res) => {
   let password = req.query.password;
   //res.statusCode(200);
   user_identities.once('value', async function(data) {
+    var usernames = Object.keys(data.val());
+    var exists = usernames.indexOf(username);
+
+    if (exists > -1) {
+      var auth = Object.values(Object.values(data.val())[exists])[0];
+      if (password === auth) {
+        res.status(200).send("valid");
+        return;
+      } else {
+        res.status(200).send("invalid");
+        return;
+      }
+    } else {
+      res.status(200).send("invalid");
+      return;
+    }
+    /*
+    waiting_links = Object.keys(data.val());
+
+    if (contains_elem(req.query.hash, waiting_links) != -1) {
+      moveFbRecord(verify_links.child(req.query.hash), tracked_courses);
+      res.sendFile(path.join(__dirname, 'client/extra/verified.html'));
+    } else {
+      res.sendFile(path.join(__dirname, 'client/extra/unverified.html'));
+    }
+    */
+  })
+});
+
+app.get("/cgauthenticate", async (req, res) => {
+//app.post("/authenticate", async (req, res) => {
+  let username = req.query.username;
+  let password = req.query.password;
+  //res.statusCode(200);
+  cg_identities.once('value', async function(data) {
     var usernames = Object.keys(data.val());
     var exists = usernames.indexOf(username);
 
@@ -253,7 +306,7 @@ const ignoreWords = [
 
 const words = text.replace(/[.]/g, '')
   .split(/\s/)
-  .filter((word) => !ingoreWords.includes(word))
+  .filter((word) => !ignoreWords.includes(word))
   .map((word) => {
     if (freq[word]) {
       console.log('contains word already');
