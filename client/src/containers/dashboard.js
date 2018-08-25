@@ -3,18 +3,6 @@ import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
 import WordComponent from '../components/WordComponent.js';
 
-const styles = {
-  large: {
-    fontSize: 60,
-    fontWeight: 'bold'
-  },
-  small: {
-    opacity: 0.7,
-    fontSize: 16
-  }
-};
-
-
 class DashboardContainer extends Component {
   constructor(props) {
     super(props);
@@ -43,12 +31,10 @@ class DashboardContainer extends Component {
 //   }
 // }
 
-iterateWords = (word, freq) => {
-  return <WordComponent word={word} freq={freq}/>
-}
+  iterateWords = (word, freq) => {
+    return <WordComponent word={word} freq={freq}/>
+  }
   
-  
-
   render() {
     const words =  {passenger: 10,
     ships: 2,
@@ -69,7 +55,9 @@ iterateWords = (word, freq) => {
               fontSize: 30,
               fontWeight: 'bold',
               fontStyle: 'italic',
-              color: () => randomColor(),
+              color: () => randomColor({
+                hue: 'blue'
+              }),
               padding: 5,
               width: '100%',
               height: '100%'

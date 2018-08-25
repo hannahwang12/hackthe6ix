@@ -261,7 +261,7 @@ const words = text.replace(/[.]/g, '')
     } else {
       freq[word] = 1;
     }
-  });
+  }); 
 console.log(freq);
 
 const document = {

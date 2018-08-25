@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import randomColor from 'randomcolor';
 
 const styles = {
   large: {
@@ -8,7 +9,10 @@ const styles = {
   small: {
     opacity: 0.7,
     fontSize: 16
-  }
+  },
+  color: () => randomColor({
+    hue: 'blue'
+  }),
 };
 
 class WordComponent extends Component {
@@ -21,7 +25,7 @@ class WordComponent extends Component {
 
   render() {
     return (
-      <div style={{fontSize: this.props.freq * 10}}>{this.props.word}{this.props.freq}</div>
+      <div style={{fontSize: this.props.freq * 5 }}>{this.props.word}</div>
     );
   }
 }
