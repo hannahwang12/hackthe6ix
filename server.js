@@ -27,15 +27,39 @@ const user_data = firebase.app().database().ref().child("user_data");
 const user_identities = firebase.app().database().ref().child("user_identities");
 const cg_identities = firebase.app().database().ref().child("cg_identities");
 
-app.get("/authenticate", async (req, res) => {
+app.get("/signup", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
   //console.log(req);
 	let username = req.query.username;
 	let password = req.query.password;
   let email = req.query.email;
-  user_identities.push(email);
-	user_identities.push(username);
-	user_identities.push(password);
+  const min = 10000000000000;
+  const max = 99999999999999;
+  const num = Math.floor(Math.random() * (max - min + 1)) + min;
+	user_identities.child(username).push(password);
+  user_identities.child(username).push(email);
+  user_identities.child(username).push(num);
+});
+
+app.get("/authenticate", async (req, res) => {
+//app.post("/authenticate", async (req, res) => {
+  //console.log(req);
+  let username = req.query.username;
+  let password = req.query.password;
+
+  user_identities.once('value', async function(data) {
+
+    /*
+    waiting_links = Object.keys(data.val());
+
+    if (contains_elem(req.query.hash, waiting_links) != -1) {
+      moveFbRecord(verify_links.child(req.query.hash), tracked_courses);
+      res.sendFile(path.join(__dirname, 'client/extra/verified.html'));
+    } else {
+      res.sendFile(path.join(__dirname, 'client/extra/unverified.html'));
+    }
+    */
+  })
 });
 
 app.use(cors({origin: 'http://localhost:3000'}));

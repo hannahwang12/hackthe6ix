@@ -10,6 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       signup: false,
+      loggedin: false,
     };
     this.url = "http://localhost:8080"
     this.username = '';
@@ -17,15 +18,18 @@ class App extends Component {
   } 
 
   signupSubmit = (user, pass, email) => {
-    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
-      this.results = response.data;
+    axios.get(this.url + "/signup?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
       // this.setState({searching: false});
       // this.setState({searched: true});
     });
   }
 
   loginSubmit = (user, pass) => {
-    //read from firebase to check
+    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
+      this.results = response.data;
+      // this.setState({searching: false});
+      // this.setState({searched: true});
+    });
   }
 
   signUp = () => {
@@ -35,10 +39,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginComponent display={this.state.signup?"none":"block"} loginSubmit={this.loginSubmit}/>
-        <SignupComponent display={this.state.signup?"block":"none"} signupSubmit={this.signupSubmit}/>
-        <button onClick={this.signUp} style={{display: this.state.signup?"none":"block"}} className="loginButton">Sign up</button>
-        <button onClick={this.signUp} style={{display: this.state.signup?"block":"none"}} className="loginButton">Back</button>
+        <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
+        <SignupComponent display={(this.state.signup || !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
+        <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
+        <button onClick={this.signUp} style={{display: (this.state.signup || !this.state.loggined)?"block":"none"}} className="loginButton">Back</button>
       </div> 
   
     );
