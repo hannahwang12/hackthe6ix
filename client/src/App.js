@@ -74,9 +74,8 @@ class App extends Component {
     }
   }
 
-  audioSubmit = (blob) => {
-    console.log(blob);
-    axios.get(this.url + "/audio?blob=" + blob.blobURL).then(response => {
+  audioSubmit = () => {
+    axios.get(this.url + "/audio").then(response => {
       this.results = response.data;
       // this.setState({searching: false});
       // this.setState({searched: true});
