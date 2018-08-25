@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const firebase = require('firebase');
 const cors = require('cors');
 const firebase_auth = require('./auth/firebase_auth.js');
+const moment = require('moment');
 
 
 // Google Cloud Speech API
@@ -235,7 +236,14 @@ app.get("/audio", async (req, res) => {
   // .catch(err => {
   //   console.error('ERROR:', err);
   // });
+});
+
+app.get("/updatefirebase", async (req, res) => {
+  user_data.child(user).child(time).push(date);
+
 })
+
+
 
 // Detects speech in the audio file
 // setTimeout(() => {
@@ -265,6 +273,7 @@ const NPLclient = new language.LanguageServiceClient({
 
 // The text to analyze
 const text = 'From the comfort of our modern lives we tend to look back at the turn of the twentieth century as a dangerous time for sea travellers. With limited communication facilities, and shipping technology still in its infancy in the early nineteen hundreds, we consider ocean travel to have been a risky business. But to the people of the time it was one of the safest forms of transport. At the time of the Titanic’s maiden voyage in 1912, there had only been four lives lost in the previous forty years on passenger ships on the North Atlantic crossing.';
+const date = moment().format('MM-DD');
 
 const freq = {};
 const ignoreWords = [
@@ -309,18 +318,13 @@ const words = text.replace(/[.]/g, '')
   .filter((word) => !ignoreWords.includes(word))
   .map((word) => {
     if (freq[word]) {
-      console.log('contains word already');
+      // console.log('contains word already');
       freq[word]++;
     } else {
       freq[word] = 1;
     }
   }); 
-console.log(freq);
-
-const document = {
-  content: text,
-  type: 'PLAIN_TEXT',
-};
+//console.log(freq);
 
 // Detects the sentiment of the text
 // NPLclient
@@ -351,6 +355,59 @@ const document = {
 //   .catch(err => {
 //     console.error('ERROR:', err);
 //   });
+
+
+app.get("/message", async (req, res) => {
+  const message = req.query.message;
+  const document = {
+    content: message,
+    type: 'PLAIN_TEXT',
+  };
+  let sentiment, entity;
+  await NPLclient
+    .analyzeSentiment({document: document})
+    .then(results => {
+      sentiment = results[0].documentSentiment;
+
+      // console.log(`Text: ${message}`);
+      // console.log(`Sentiment score: ${sentiment.score}`);
+      // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+      // if (sentiment.score > 0) {
+      //   console.log('positive');
+      //   res.status(200).send({sentiment: "positive"});
+      // } else {
+      //   res.status(200).send({sentiment: "negative"});
+      // }
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  await NPLclient
+    .analyzeEntities({document: document})
+    .then(results => {
+      entity = results[0].entities[0];
+      entity = entity.name || null;
+
+      // console.log(`Text: ${message}`);
+      // console.log(`Sentiment score: ${sentiment.score}`);
+      // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+      // if (sentiment.score > 0) {
+      //   console.log('positive');
+      //   res.status(200).send({sentiment: "positive"});
+      // } else {
+      //   res.status(200).send({sentiment: "negative"});
+      // }
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  if (sentiment.score > 0) {
+    console.log('positive');
+    res.status(200).send({sentiment: "positive", entity});
+  } else {
+    res.status(200).send({sentiment: "negative", entity});
+  }
+})
 
 
 

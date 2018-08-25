@@ -15,10 +15,16 @@ class App extends Component {
       loggedin: false, //none, senior, caregiver
       error: null,
       type: false, //none, senior, caregiver
+      index: '1',
+    //  yesno: false,
     };
     this.url = "http://localhost:8080"
     this.username = '';
     this.password = '';
+    this.sentiment = '';
+    this.entity = '';
+    this.yesno = false;
+    
   } 
 
   signupSubmit = (user, pass, email) => {
@@ -83,6 +89,94 @@ class App extends Component {
     });
   }
 
+  messageSubmit = (message, index) => {
+    console.log(message)
+    axios.get(this.url + "/message?message=" + message + "&index=" + index).then(response => {
+      var results = response.data;
+      console.log(results);
+      var sentiment = results.sentiment;
+      console.log(sentiment);
+      var entity = results.entity;
+      this.entity = entity;
+      this.updateIndex(sentiment, entity, false); // ADD YES
+    })
+  }
+
+  updateIndex = (sentiment, entity, yes) => {
+    console.log(sentiment);
+    if (this.state.index == 1) {
+      if (sentiment == 'positive') {
+        this.setState({index: 2});// tell me more about entity
+      } else {
+        this.setState({index: 3});
+      }
+    } else if (this.state.index == 2 || this.state.index == 3) {
+    //  this.yesno({yesno: true});
+      if (sentiment == 'positive') {
+        this.setState({index: 4});
+        
+      } else {
+        this.setState({index: 5});
+      }
+    } else if (this.state.index == 4 || this.state.index == 5) {
+      this.yesno = true;
+      this.setState({index: 6});
+      // if (yes) {
+      //   this.setState({index: 6});
+      // } else {
+      //   this.setState({index: 7});
+      //   // call function to update firebase
+      //   return;
+      // }
+    } else if (this.state.index == 6) {
+      this.yesno = false;
+      if (yes) {
+        // if (sentiment == 'positive') {
+        //   this.setState({index: 2}); // tell me more about entity
+        // } else {
+        //   this.setState({index: 3});
+        // }
+      } else {
+        this.setState({index: 7});
+
+      }
+      
+    }
+  }
+
+  /*
+  chatbot = (entity) => {
+  //  console.log(this.botMessage);
+    switch (this.state.index) {
+      case 1:
+        this.state.botMessage = 'Hi _____, how was your day?';
+        break;
+      case 2:
+        this.state.botMessage = `That's great! Tell me more about ${entity}!`;
+        break;
+      case 3:
+        this.state.botMessage = `Aww sorry to hear that! Why don't you tell me a bit more about ${entity}?`;
+        break;
+      case 4:
+        this.state.botMessage = "That's interesting! Is there anything else you wanted to chat about?"; // yes or no
+        break;
+      case 5: 
+        this.state.botMessage = "Aww don't worry, it's alright! Is there anything else you wanted to chat about?"; // yes or no
+        break;
+      case 6:
+        this.state.botMessage = "What's up?";
+        break;
+      case 7:
+        this.state.botMessage = "Okay, have a nice day! See you tomorrow!";
+        break;
+      default:
+        this.state.botMessage = "";
+        break;
+     }
+  //   console.log(this.state.botMessage);
+    }
+    */
+
   render() {
     console.log(this.state.loggedin && this.state.type === "senior");
     console.log(this.state.loggedin && this.state.type === "caregiver");
@@ -98,7 +192,7 @@ class App extends Component {
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
-        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} />
+        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno}/>
         <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
       </div> 
   

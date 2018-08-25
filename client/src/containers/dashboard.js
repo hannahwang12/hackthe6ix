@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TagCloud from 'react-tag-cloud';
+import WordCloudComponents from '../components/WordCloudComponent.js';
 import randomColor from 'randomcolor';
 import WordComponent from '../components/WordComponent.js';
 
@@ -31,9 +31,7 @@ class DashboardContainer extends Component {
 //   }
 // }
 
-  iterateWords = (word, freq) => {
-    return <WordComponent word={word} freq={freq}/>
-  }
+
   
   render() {
     const words =  {passenger: 10,
@@ -43,29 +41,18 @@ class DashboardContainer extends Component {
     crossing: 1 }
     return (
       <div style={{display: this.props.display}}>
-        <h1>Dashboard</h1>
-        <div>Overview</div>
-        <div>Graph</div>
-        <div className="app-outer">
-        <div className="app-inner">
-          <TagCloud 
-            className="tag-cloud"
-            style={{
-              fontFamily: 'sans-serif',
-              fontSize: 30,
-              fontWeight: 'bold',
-              fontStyle: 'italic',
-              color: () => randomColor({
-                hue: 'blue'
-              }),
-              padding: 5,
-              width: '100%',
-              height: '100%'
-            }}>
-            {Object.entries(words).map((elem) => this.iterateWords(elem[0], elem[1]))}
-          </TagCloud>
+        <div className="dashboard">
+          <h1>Dashboard</h1>
+          <div className="dashboardComponents">
+            <div>Overview</div>
+            <div className="wordCloudContainer">
+              <WordCloudComponents words={words}/>
+            </div>
+            
+            <div>Graph</div>
+          </div>
         </div>
-        </div>
+        
       </div>
     );
   }

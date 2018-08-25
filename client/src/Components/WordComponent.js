@@ -25,7 +25,7 @@ class WordComponent extends Component {
 
   render() {
     return (
-      <div style={{fontSize: this.props.freq * 5 }}>{this.props.word}</div>
+      <div style={{fontSize: this.props.freq * 2 }}>{this.props.word}</div>
     );
   }
 }
