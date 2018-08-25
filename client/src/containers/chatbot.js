@@ -6,6 +6,7 @@ class ChatbotContainer extends Component {
     super(props);
     this.state = {
       record: false,
+      blob: '',
     };
   } 
 
@@ -25,14 +26,25 @@ class ChatbotContainer extends Component {
     console.log('chunk of real-time data is: ', recordedBlob);
   }
  
-  onStop(recordedBlob) {
+  onStop = (recordedBlob) => {
     console.log('recordedBlob is: ', recordedBlob);
+  //  this.state.blob = recordedBlob;
+    this.props.audioSubmit(recordedBlob);
+
+    var myFile = this.blobToFile(recordedBlob, 'blob.mp3');
+  //  fs.writeFile('audio.raw', recordedBlob, (err) => console.log('fs write file'));
+  }
+
+  blobToFile(blob, filename) {
+    blob.lastModifiedDate = new Date();
+    blob.name = filename;
+    return blob;
   }
 
   render() {
     return (
       <div className="chatbot">
-        <div>
+        {/* <div>
           <ReactMic
             record={this.state.record}
             className="sound-wave"
@@ -42,7 +54,7 @@ class ChatbotContainer extends Component {
             backgroundColor="#FF4081" />
           <button onClick={this.startRecording} type="button">Start</button>
           <button onClick={this.stopRecording} type="button">Stop</button>
-        </div>
+        </div> */}
       </div> 
   
     );

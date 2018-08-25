@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cors": "^2.8.4",
+    "randomcolor": "^0.5.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-mic": "^12.2.0",

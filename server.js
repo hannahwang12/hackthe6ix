@@ -5,28 +5,78 @@ const firebase = require('firebase');
 const cors = require('cors');
 
 // Google Cloud Speech API
-//const mic = require('mic');
 const fs = require('fs');
-// const speech = require('@google-cloud/speech');
+const Speech = require('@google-cloud/speech');
+const record = require('node-record-lpcm16');
 // // Creates a client
-// const client = new speech.SpeechClient();
-//const filename = '/path/to/audio.raw';
-const encoding = 'Encoding of the audio file, e.g. LINEAR16';
+/*const client = new speech.SpeechClient({
+  projectId: 'hackthe6ix-dd4d2',
+  keyFilename: 'google_cloud_api_key.json',
+});*/
+const filename = './output.raw';
+
+
+/*
+const audio = {
+  content: fs.readFileSync(filename).toString('base64'),
+};
+let blob;
+
+const encoding = 'LINEAR16';
 const sampleRateHertz = 16000;
-const languageCode = 'BCP-47 language code, e.g. en-US';
+const languageCode = 'en-US';
+
 const config = {
   encoding: encoding,
   sampleRateHertz: sampleRateHertz,
   languageCode: languageCode,
 };
-// const audio = {
-//   content: fs.readFileSync(filename).toString('base64'),
-// };
+
+const request = {
+  config: {
+    encoding: encoding,
+    sampleRateHertz: sampleRateHertz,
+    languageCode: languageCode,
+  },
+  interimResults: true, // If you want interim results, set this to true
+};
+*/
 
 // const request = {
 //   config: config,
-//   audio: audio,
+//   uri: blob.slice(5),
 // };
+
+function streamtoParser() {
+  const speech = Speech({
+    projectId: 'hackthe6ix-dd4d2',
+    keyFilename: 'google_cloud_api_key.json',
+  });
+  const request = {
+    config: {
+      encoding: 'LINEAR16',
+      sampleRateHertz: '16000',
+      languageCode: 'en-US',
+    },
+    interimResults: true,
+  }
+
+  const recognizeStream = speech.createRecognizeStream(request)
+  .on('error', console.error)
+  .on('data', data => {console.log(data.results)}
+  );
+
+  record
+  .start({
+    sampleRate: 16000,
+    threshold: .6,
+    verbose: true,
+    silence: '5.0',
+  }).on('error', console.error)
+  .pipe(recognizeStream)
+
+  console.log("listening");
+}
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -50,6 +100,8 @@ firebase.initializeApp({
 const user_data = firebase.app().database().ref().child("user_data");
 const user_identities = firebase.app().database().ref().child("user_identities");
 const cg_identities = firebase.app().database().ref().child("cg_identities");
+
+// Create a recognize stream
 
 app.get("/signup", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
@@ -86,8 +138,46 @@ app.get("/authenticate", async (req, res) => {
   })
 });
 
+app.get("/audio", async (req, res) => {
+ //console.log('req' + req);
+  //blob = req.query.blob;
+  //console.log(blob.slice(5));
+
+  streamtoParser();
+  /*
+  record
+  .start({
+    sampleRateHertz: sampleRateHertz,
+    threshold: 0,
+    // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
+    verbose: true,
+    recordProgram: 'sox', // Try also "arecord" or "sox"
+    silence: '1.0',
+  })
+  .on('error', console.error)
+  .pipe(recognizeStream);*/
+  // client
+  // .recognize({
+  //   config: config,
+  //   audio: {
+  //     uri: blob.slice(5),
+  //   }
+  // })
+  // .then(data => {
+  //   const response = data[0];
+  //   const transcription = response.results
+  //     .map(result => result.alternatives[0].transcript)
+  //     .join('\n');
+  //   console.log(`Transcription: `, transcription);
+  // })
+  // .catch(err => {
+  //   console.error('ERROR:', err);
+  // });
+})
+
 // Detects speech in the audio file
-// client
+// setTimeout(() => {
+//   client
 //   .recognize(request)
 //   .then(data => {
 //     const response = data[0];
@@ -99,62 +189,110 @@ app.get("/authenticate", async (req, res) => {
 //   .catch(err => {
 //     console.error('ERROR:', err);
 //   });
+// }, 1000);
 
-//   var micInstance = mic({
-//     rate: '16000',
-//     channels: '1',
-//     debug: true,
-//     exitOnSilence: 6
-// });
-// var micInputStream = micInstance.getAudioStream();
- 
-// var outputFileStream = fs.WriteStream('output.raw');
- 
-// micInputStream.pipe(outputFileStream);
- 
-// micInputStream.on('data', function(data) {
-//     console.log("Recieved Input Stream: " + data.length);
-// });
- 
-// micInputStream.on('error', function(err) {
-//     cosole.log("Error in Input Stream: " + err);
-// });
- 
-// micInputStream.on('startComplete', function() {
-//     console.log("Got SIGNAL startComplete");
-//     setTimeout(function() {
-//             micInstance.pause();
-//     }, 5000);
-// });
-    
-// micInputStream.on('stopComplete', function() {
-//     console.log("Got SIGNAL stopComplete");
-// });
-    
-// micInputStream.on('pauseComplete', function() {
-//     console.log("Got SIGNAL pauseComplete");
-//     setTimeout(function() {
-//         micInstance.resume();
-//     }, 5000);
-// });
- 
-// micInputStream.on('resumeComplete', function() {
-//     console.log("Got SIGNAL resumeComplete");
-//     setTimeout(function() {
-//         micInstance.stop();
-//     }, 5000);
-// });
- 
-// micInputStream.on('silence', function() {
-//     console.log("Got SIGNAL silence");
-// });
- 
-// micInputStream.on('processExitComplete', function() {
-//     console.log("Got SIGNAL processExitComplete");
-// });
- 
-// micInstance.start();
-// micInstance.pause();
+
+// Imports the Google Cloud client library
+const language = require('@google-cloud/language');
+
+// Instantiates a client
+const NPLclient = new language.LanguageServiceClient({
+  projectId: 'hackthe6ix-dd4d2',
+  keyFilename: 'google_cloud_api_key.json',
+});
+
+// The text to analyze
+const text = 'From the comfort of our modern lives we tend to look back at the turn of the twentieth century as a dangerous time for sea travellers. With limited communication facilities, and shipping technology still in its infancy in the early nineteen hundreds, we consider ocean travel to have been a risky business. But to the people of the time it was one of the safest forms of transport. At the time of the Titanic’s maiden voyage in 1912, there had only been four lives lost in the previous forty years on passenger ships on the North Atlantic crossing.';
+
+const freq = {};
+const ignoreWords = [
+  'I',
+  'he',
+  'him',
+  'her',
+  'she',
+  'a',
+  'the',
+  'them',
+  'it',
+  'if',
+  'me',
+  'am',
+  'are',
+  'and',
+  'was',
+  'is',
+  'were',
+  'but',
+  'who',
+  'in',
+  'you',
+  'on',
+  'our',
+  'my',
+  'to',
+  'of',
+  'we',
+  'from',
+  'at',
+  'as',
+  'for',
+  'its',
+  'had',
+  'have',
+];
+
+const words = text.replace(/[.]/g, '')
+  .split(/\s/)
+  .filter((word) => !ingoreWords.includes(word))
+  .map((word) => {
+    if (freq[word]) {
+      console.log('contains word already');
+      freq[word]++;
+    } else {
+      freq[word] = 1;
+    }
+  });
+console.log(freq);
+
+const document = {
+  content: text,
+  type: 'PLAIN_TEXT',
+};
+
+// Detects the sentiment of the text
+// NPLclient
+//   .analyzeSentiment({document: document})
+//   .then(results => {
+//     const sentiment = results[0].documentSentiment;
+
+//     console.log(`Text: ${text}`);
+//     console.log(`Sentiment score: ${sentiment.score}`);
+//     console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+//   })
+//   .catch(err => {
+//     console.error('ERROR:', err);
+//   });
+
+// NPLclient
+//   .analyzeEntitySentiment({document: document})
+//   .then(results => {
+//     console.log(results);
+//     const entities = results[0].entities;
+//     entities.map((elem) => console.log(elem.mentions));
+//     console.log(entities)
+
+//     // console.log(`Text: ${text}`);
+//     // console.log(`Sentiment score: ${sentiment.score}`);
+//     // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+//   })
+//   .catch(err => {
+//     console.error('ERROR:', err);
+//   });
+
+
+
+
 
 app.use(cors({origin: 'http://localhost:3000'}));
 app.listen(port);
