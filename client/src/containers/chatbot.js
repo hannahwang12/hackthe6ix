@@ -57,7 +57,7 @@ class ChatbotContainer extends Component {
     return (
       <div className="chatbot" style={{display: this.props.display}}>
        <div>
-        {/*
+        {
           <ReactMic
             record={this.state.record}
             className="sound-wave"
@@ -67,8 +67,9 @@ class ChatbotContainer extends Component {
             backgroundColor="#FF4081" />
           <button onClick={this.startRecording} type="button">Start</button>
           <button onClick={this.stopRecording} type="button">Stop</button>
-        */}
-          <button onClick={this.test}>Test</button>
+        }
+          {//<button onClick={this.test}>Test</button>
+        }
         </div>
       </div> 
   
