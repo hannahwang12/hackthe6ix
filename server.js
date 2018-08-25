@@ -3,6 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const firebase = require('firebase');
 const cors = require('cors');
+const firebase_auth = require('./auth/firebase_auth.js');
+
 
 // Google Cloud Speech API
 const fs = require('fs');
@@ -87,21 +89,14 @@ const port = process.env.PORT || 8080;
 // Gear icon in left sidebar > General > Add Firebase to your Web App
 // Don't bother with config variable
 // npm install firebase and import it
-firebase.initializeApp({
-  apiKey: "AIzaSyCfxOTiqUJ6k66ygoChsUdKN4o-Nr6nYJ8",
-  authDomain: "hackthe6ix-dd4d2.firebaseapp.com",
-  databaseURL: "https://hackthe6ix-dd4d2.firebaseio.com",
-  projectId: "hackthe6ix-dd4d2",
-  storageBucket: "hackthe6ix-dd4d2.appspot.com",
-  messagingSenderId: "1023103574623"
-});
+firebase.initializeApp(firebase_auth.firebase_auth);
 
 // Reference to database, this is automatically the root
 const user_data = firebase.app().database().ref().child("user_data");
 const user_identities = firebase.app().database().ref().child("user_identities");
 const cg_identities = firebase.app().database().ref().child("cg_identities");
 
-// Create a recognize stream
+app.use(cors({origin: 'http://localhost:3000'}));
 
 app.get("/signup", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
@@ -119,12 +114,26 @@ app.get("/signup", async (req, res) => {
 
 app.get("/authenticate", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
-  //console.log(req);
   let username = req.query.username;
   let password = req.query.password;
-
+  //res.statusCode(200);
   user_identities.once('value', async function(data) {
+    var usernames = Object.keys(data.val());
+    var exists = usernames.indexOf(username);
 
+    if (exists > -1) {
+      var auth = Object.values(Object.values(data.val())[exists])[0];
+      if (password === auth) {
+        res.status(200).send("valid");
+        return;
+      } else {
+        res.status(200).send("invalid");
+        return;
+      }
+    } else {
+      res.status(200).send("invalid");
+      return;
+    }
     /*
     waiting_links = Object.keys(data.val());
 
@@ -294,7 +303,6 @@ const document = {
 
 
 
-app.use(cors({origin: 'http://localhost:3000'}));
 app.listen(port);
 
 app.use(express.static(path.join(__dirname, 'client/build')));

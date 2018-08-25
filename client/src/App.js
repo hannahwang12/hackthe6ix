@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
-import SignupComponent from './components/SignupComponent.js';
 import LoginComponent from './components/LoginComponent.js';
+import SignupComponent from './components/SignupComponent.js';
 import ChatbotContainer from './containers/chatbot.js'
-import CaretakerContainer from './containers/caretaker';
+import DashboardContainer from './containers/dashboard.js';
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       signup: false,
       loggedin: false,
+      error: false,
     };
     this.url = "http://localhost:8080"
     this.username = '';
@@ -28,7 +29,12 @@ class App extends Component {
 
   loginSubmit = (user, pass) => {
     axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
-      this.results = response.data;
+      var results = response.data;
+      if (results === "valid") {
+        this.setState({ loggedin: user, error: false });
+      } else {
+        this.setState({ error: true });
+      }
       // this.setState({searching: false});
       // this.setState({searched: true});
     });
@@ -50,12 +56,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/> */}
-        {/* <SignupComponent display={(this.state.signup || !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/> */}
-        {/* <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button> */}
-        {/* <button onClick={this.signUp} style={{display: (this.state.signup || !this.state.loggined)?"block":"none"}} className="loginButton">Back</button> */}
-        {/* <ChatbotContainer audioSubmit={this.audioSubmit}/> */}
-        <CaretakerContainer/>
+        <LoginComponent display={(this.state.signup || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
+        <SignupComponent display={(this.state.signup && !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
+        <button onClick={this.signUp} style={{display: (this.state.signup || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
+        <button onClick={this.signUp} style={{display: (this.state.signup && !this.state.loggedin)?"block":"none"}} className="loginButton">Back</button>
+        <p style={{display: this.state.error?"block":"none"}}>Bad username or password (in friendly terms)</p>
+        <ChatbotContainer audioSubmit={this.audioSubmit}/>
+        <DashboardContainer/>
       </div> 
   
     );

@@ -15,7 +15,7 @@ const styles = {
 };
 
 
-class CaretakerContainer extends Component {
+class DashboardContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,4 +83,4 @@ iterateWords = (word, freq) => {
   }
 }
 
-export default CaretakerContainer;
+export default DashboardContainer;
