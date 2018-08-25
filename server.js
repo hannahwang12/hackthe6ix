@@ -168,7 +168,61 @@ app.get("/message", async (req, res) => {
   }
 });
 
+const client = new speech.SpeechClient();
+
+const encoding = 'LINEAR16';
+const sampleRateHertz = 16000;
+const LanguageCode = 'en-US';
+
+const request = {
+  config: {
+    encoding: encoding,
+    sampleRateHertz: sampleRateHertz,
+    languageCode: languageCode,
+  },
+  interimResults: false, // If you want interim results, set this to true
+};
+
+const recognizeStream = client
+  .streamingRecognize(request)
+  .on('error', console.error)
+  .on('data', data =>
+    process.stdout.write(
+      data.results[0] && data.results[0].alternatives[0]
+        ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
+        : `\n\nReached transcription time limit, press Ctrl+C\n`
+    )
+  );
+
 app.get("/audio", async (req, res) => {
+  record
+    .start({
+      sampleRateHertz: sampleRateHertz,
+      threshold: 0,
+      // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
+      verbose: true,
+      recordProgram: 'sox', // Try also "arecord" or "sox"
+      silence: '4.0',
+    })
+    .on('error', console.error)
+    .pipe(recognizeStream);
+  // client
+  // .recognize({
+  //   config: config,
+  //   audio: {
+  //     uri: blob.slice(5),
+  //   }
+  // })
+  // .then(data => {
+  //   const response = data[0];
+  //   const transcription = response.results
+  //     .map(result => result.alternatives[0].transcript)
+  //     .join('\n');
+  //   console.log(`Transcription: `, transcription);
+  // })
+  // .catch(err => {
+  //   console.error('ERROR:', err);
+  // });
 });
 
 const text = 'From the comfort of our modern lives we tend to look back at the turn of the twentieth century as a dangerous time for sea travellers. With limited communication facilities, and shipping technology still in its infancy in the early nineteen hundreds, we consider ocean travel to have been a risky business. But to the people of the time it was one of the safest forms of transport. At the time of the Titanic’s maiden voyage in 1912, there had only been four lives lost in the previous forty years on passenger ships on the North Atlantic crossing.';
