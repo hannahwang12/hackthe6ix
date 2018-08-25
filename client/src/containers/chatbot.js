@@ -17,9 +17,10 @@ class ChatbotContainer extends Component {
     this.url = "http://localhost:8080";
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    console.log("CALL");
-    this.chatbot(this.props.messageEntity);
+  componentWillReceiveProps = async (nextProps) => {
+    await this.setState({ data: nextProps.data });
+    console.log(this.props.messageEntity);
+    await this.chatbot(this.props.messageEntity);
   }
 
   /*
@@ -74,7 +75,7 @@ class ChatbotContainer extends Component {
 
   messageSubmit = (e) => {
     e.preventDefault();
-    this.props.messageSubmit(this.state.message, this.state.index);
+    this.props.messageSubmit(this.state.message, this.props.index);
   }
 
   handleChangeMessage = (e) => {
@@ -115,27 +116,32 @@ class ChatbotContainer extends Component {
   chatbot = (entity) => {
    // this.setState({botMessage: this.props.botMessage});
     if (this.props.index == 0) {
-      console.log(this.props.index);
       this.botMessage = '1Hi _____, how was your day?'; 
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 1) {
-      console.log(this.props.index);
       this.botMessage = 'Hi _____, how was your day?';
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 2) {
-      console.log(this.props.index);
       this.botMessage = `That's great! Tell me more about the ${entity}!`;
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 3) {
-      console.log(this.props.index);
       this.botMessage = `Aww sorry to hear that! Why don't you tell me a bit more about the ${entity}?`;
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 4) {
       this.botMessage = "That's interesting! Is there anything else you wanted to chat about?"; // yes or no
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 5) {
       this.botMessage = "Aww don't worry, it's alright! Is there anything else you wanted to chat about?"; // yes or no
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 6) {
       this.botMessage = "What's up?";
+      this.setState({ rerender: !this.state.rerender });
     } else if (this.props.index == 7) {
       this.botMessage = "Okay, have a nice day! See you tomorrow!";
+      this.setState({ rerender: !this.state.rerender });
     } else {
       this.botMessage = '';
+      this.setState({ rerender: !this.state.rerender });
     }
   }
 

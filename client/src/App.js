@@ -104,7 +104,7 @@ class App extends Component {
     if (this.state.index == 0) {
       console.log("set")
       this.setState({index: 1});
-      console.log("set")
+      console.log("after set")
     } else if (this.state.index == 1) {
       if (sentiment == 'positive') {
         this.setState({index: 2});// tell me more about entity
