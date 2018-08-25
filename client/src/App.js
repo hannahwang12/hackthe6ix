@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
-import './Components/loginComponent.js'
-import loginComponent from './Components/loginComponent.js';
+import './components/LoginComponent.js'
+import LoginComponent from './components/LoginComponent.js';
 
 class App extends Component {
   constructor(props) {
@@ -11,12 +11,13 @@ class App extends Component {
     this.state = {
 
     };
+    this.url = "http://localhost:8080"
     this.username = '';
     this.password = '';
   } 
 
   loginSubmit = (user, pass) => {
-    axios.get("/authenticate?username=" + user + "&password=" + pass).then(response => {
+    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
       this.results = response.data;
       // this.setState({searching: false});
       // this.setState({searched: true});
@@ -26,7 +27,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <loginComponent submit={this.loginSubmit}/>
+        <p>hello</p>
+        <LoginComponent loginSubmit={this.loginSubmit}/>
       </div> 
   
     );

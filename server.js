@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const firebase = require('firebase');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -28,13 +29,14 @@ const cg_identities = firebase.app().database().ref().child("cg_identities");
 
 app.get("/authenticate", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
-  console.log(req);
+  //console.log(req);
 	let username = req.query.username;
 	let password = req.query.password;
 	user_data.push(username);
 	user_data.push(password);
 });
 
+app.use(cors({origin: 'http://localhost:3000'}));
 app.listen(port);
 
 app.use(express.static(path.join(__dirname, 'client/build')));
