@@ -31,7 +31,9 @@ class DashboardContainer extends Component {
 //   }
 // }
 
-
+  iterateWords = (word, freq) => {
+    return <WordComponent word={word} freq={freq}/>
+  }
   
   render() {
     const words =  {passenger: 10,

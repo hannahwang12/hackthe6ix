@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ReactMic } from 'react-mic';
+import axios from 'axios';
 import fs from 'fs';
 
 class ChatbotContainer extends Component {
@@ -12,13 +13,16 @@ class ChatbotContainer extends Component {
       rerender: true,
     };
 //  this.messageEntity = '';
-  this.botMessage = '';
+    this.botMessage = '';
+    this.url = "http://localhost:8080";
   }
 
-  componentWillReceiveProps = () => {
+  componentWillReceiveProps = (nextProps) => {
+    console.log("CALL");
     this.chatbot(this.props.messageEntity);
   }
 
+  /*
   startRecording = () => {
     this.setState({
       record: true
@@ -37,8 +41,8 @@ class ChatbotContainer extends Component {
  
   onStop = (recordedBlob) => {
     console.log('recordedBlob is: ', recordedBlob);
-  //  this.state.blob = recordedBlob;
-    this.props.audioSubmit(recordedBlob);
+    this.state.blob = recordedBlob;
+  //  this.props.audioSubmit(recordedBlob);
 
     var myFile = this.blobToFile(recordedBlob, 'blob.mp3');
     fs.writeFile('audio.raw', recordedBlob, (err) => console.log('fs write file'));
@@ -48,6 +52,24 @@ class ChatbotContainer extends Component {
     blob.lastModifiedDate = new Date();
     blob.name = filename;
     return blob;
+  }
+  */
+
+  startRecording = () => {
+    axios.get(this.url + "/audio").then(response => {
+      var results = response.data;
+      // this.setState({searching: false});
+      // this.setState({searched: true});
+    });
+  }
+
+  test = (message, index) => {
+    const text = 'From the comfort of our modern lives we tend to look back at the turn of the twentieth century as a dangerous time for sea travellers. With limited communication facilities, and shipping technology still in its infancy in the early nineteen hundreds, we consider ocean travel to have been a risky business. But to the people of the time it was one of the safest forms of transport. At the time of the Titanic’s maiden voyage in 1912, there had only been four lives lost in the previous forty years on passenger ships on the North Atlantic crossing.';
+    axios.get(this.url + "/update?message=" + text).then(response => {
+      var results = response.data;
+      // this.setState({searching: false});
+      // this.setState({searched: true});
+    });
   }
 
   messageSubmit = (e) => {
@@ -92,11 +114,17 @@ class ChatbotContainer extends Component {
 
   chatbot = (entity) => {
    // this.setState({botMessage: this.props.botMessage});
-    if (this.props.index == 1) {
+    if (this.props.index == 0) {
+      console.log(this.props.index);
+      this.botMessage = '1Hi _____, how was your day?'; 
+    } else if (this.props.index == 1) {
+      console.log(this.props.index);
       this.botMessage = 'Hi _____, how was your day?';
     } else if (this.props.index == 2) {
+      console.log(this.props.index);
       this.botMessage = `That's great! Tell me more about the ${entity}!`;
     } else if (this.props.index == 3) {
+      console.log(this.props.index);
       this.botMessage = `Aww sorry to hear that! Why don't you tell me a bit more about the ${entity}?`;
     } else if (this.props.index == 4) {
       this.botMessage = "That's interesting! Is there anything else you wanted to chat about?"; // yes or no
@@ -119,19 +147,17 @@ class ChatbotContainer extends Component {
   //  this.state.botMessage = this.props.botMessage;
   //  this.chatbot();
  //   this.updateIndex(sentiment, entity, yes);
-    console.log("yesno: " + this.props.yesno);
     return (
       <div className="chatbot" style={{display: this.props.display}}>
-        <div>
+       <div>
           {/* <ReactMic
             record={this.state.record}
             className="sound-wave"
             onStop={this.onStop}
             onData={this.onData}
             strokeColor="#000000"
-            backgroundColor="#FF4081" />
+            backgroundColor="#FF4081" /> */}
           <button onClick={this.startRecording} type="button">Start</button>
-          <button onClick={this.stopRecording} type="button">Stop</button> */}
           <p>{this.botMessage}</p>
           <form id="messageBox" onSubmit={this.messageSubmit} className="messageBox" autoComplete="off">
             <input name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>
@@ -142,6 +168,8 @@ class ChatbotContainer extends Component {
             </div> : null}
             <input type="submit" value="send" className="sendButton"/>
           </form>
+          {/*<button onClick={this.stopRecording} type="button">Stop</button>*/}
+          {/* {<button onClick={this.test}>Test</button>} */}
         </div>
       </div> 
   

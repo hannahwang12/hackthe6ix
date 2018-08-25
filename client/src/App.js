@@ -15,7 +15,7 @@ class App extends Component {
       loggedin: false, //none, senior, caregiver
       error: null,
       type: false, //none, senior, caregiver
-      index: '1',
+      index: '0',
     //  yesno: false,
     };
     this.url = "http://localhost:8080"
@@ -80,9 +80,8 @@ class App extends Component {
     }
   }
 
-  audioSubmit = (blob) => {
-    console.log(blob);
-    axios.get(this.url + "/audio?blob=" + blob.blobURL).then(response => {
+  audioSubmit = () => {
+    axios.get(this.url + "/audio").then(response => {
       this.results = response.data;
       // this.setState({searching: false});
       // this.setState({searched: true});
@@ -90,21 +89,23 @@ class App extends Component {
   }
 
   messageSubmit = (message, index) => {
-    console.log(message)
-    axios.get(this.url + "/message?message=" + message + "&index=" + index).then(response => {
+    console.log("messageSubmit: " + message)
+    axios.get(this.url + "/message?message=" + message + "&index=" + index).then(async response => {
       var results = response.data;
-      console.log(results);
       var sentiment = results.sentiment;
-      console.log(sentiment);
       var entity = results.entity;
       this.entity = entity;
-      this.updateIndex(sentiment, entity, false); // ADD YES
+      console.log("just before update");
+      await this.updateIndex(sentiment, entity, true); // ADD YES
     })
   }
 
   updateIndex = (sentiment, entity, yes) => {
-    console.log(sentiment);
-    if (this.state.index == 1) {
+    if (this.state.index == 0) {
+      console.log("set")
+      this.setState({index: 1});
+      console.log("set")
+    } else if (this.state.index == 1) {
       if (sentiment == 'positive') {
         this.setState({index: 2});// tell me more about entity
       } else {
@@ -114,7 +115,6 @@ class App extends Component {
     //  this.yesno({yesno: true});
       if (sentiment == 'positive') {
         this.setState({index: 4});
-        
       } else {
         this.setState({index: 5});
       }
@@ -138,7 +138,6 @@ class App extends Component {
         // }
       } else {
         this.setState({index: 7});
-
       }
       
     }
@@ -178,8 +177,6 @@ class App extends Component {
     */
 
   render() {
-    console.log(this.state.loggedin && this.state.type === "senior");
-    console.log(this.state.loggedin && this.state.type === "caregiver");
     return (
       <div className="App">
         {/*this.state.type == "senior" or "caregiver" to determine which screen to show}*/}
