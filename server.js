@@ -165,7 +165,6 @@ app.get("/authenticate", async (req, res) => {
   })
 });
 
-<<<<<<< HEAD
 app.get("/cgauthenticate", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
   let username = req.query.username;
@@ -200,7 +199,7 @@ app.get("/cgauthenticate", async (req, res) => {
     */
   })
 });
-=======
+
 app.get("/audio", async (req, res) => {
  //console.log('req' + req);
   //blob = req.query.blob;
@@ -237,7 +236,6 @@ app.get("/audio", async (req, res) => {
   //   console.error('ERROR:', err);
   // });
 })
->>>>>>> d831756a2b0e30a132442319f5caaef6677b2691
 
 // Detects speech in the audio file
 // setTimeout(() => {
@@ -308,7 +306,7 @@ const ignoreWords = [
 
 const words = text.replace(/[.]/g, '')
   .split(/\s/)
-  .filter((word) => !ingoreWords.includes(word))
+  .filter((word) => !ignoreWords.includes(word))
   .map((word) => {
     if (freq[word]) {
       console.log('contains word already');
