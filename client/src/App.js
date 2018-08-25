@@ -10,6 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       signup: false,
+      loggedin: false,
     };
     this.url = "http://localhost:8080"
     this.username = '';
@@ -17,15 +18,18 @@ class App extends Component {
   } 
 
   signupSubmit = (user, pass, email) => {
-    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
-      this.results = response.data;
+    axios.get(this.url + "/signup?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
       // this.setState({searching: false});
       // this.setState({searched: true});
     });
   }
 
   loginSubmit = (user, pass) => {
-    //read from firebase to check
+    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
+      this.results = response.data;
+      // this.setState({searching: false});
+      // this.setState({searched: true});
+    });
   }
 
   signUp = () => {

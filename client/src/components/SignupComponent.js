@@ -32,11 +32,11 @@ class SignUpComponent extends Component {
     return (
       <div style={{display: this.props.display}}>
         <h1 className="title">Signup</h1>
-        <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" display="none" frameBorder="0"></iframe>
-        <form id="login" onSubmit={this.signupSubmit} className="login" target="dummyframe" autoComplete="off">
-          <input id="email" classname="loginField" placeholder="email" value={this.email} onChange={this.handleChangePass}/>
-          <input id="username" classname="loginField" placeholder="username" value={this.state.username} onChange={this.handleChangeUser}/>
-          <input id="password" classname="loginField" type="password" placeholder="password" value={this.password} onChange={this.handleChangePass}/>
+        <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe_l" display="none" frameBorder="0"></iframe>
+        <form id="signup" onSubmit={this.signupSubmit} className="login" target="dummyframe_l" autoComplete="off">
+          <input name="email" className="loginField" placeholder="email" value={this.state.email} onChange={this.handleChangeEmail}/>
+          <input name="username" className="loginField" placeholder="username" value={this.state.username} onChange={this.handleChangeUser}/>
+          <input name="password" className="loginField" type="password" placeholder="password" value={this.password} onChange={this.handleChangePass}/>
           <input type="submit" value="Submit" className="loginButton"/>
         </form>
       </div> 
