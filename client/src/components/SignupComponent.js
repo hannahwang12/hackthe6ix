@@ -13,7 +13,7 @@ class SignUpComponent extends Component {
 
   signupSubmit = (e) => {
     e.preventDefault();
-    this.props.signupSubmit(this.state.username, this.state.password);
+    this.props.signupSubmit(this.state.username, this.state.password, this.state.email);
   }
 
   handleChangeEmail= (e) => {
@@ -37,7 +37,7 @@ class SignUpComponent extends Component {
           <input id="email" classname="loginField" placeholder="email" value={this.email} onChange={this.handleChangePass}/>
           <input id="username" classname="loginField" placeholder="username" value={this.state.username} onChange={this.handleChangeUser}/>
           <input id="password" classname="loginField" type="password" placeholder="password" value={this.password} onChange={this.handleChangePass}/>
-          <input type="submit" value="submit" className="loginButton"/>
+          <input type="submit" value="Submit" className="loginButton"/>
         </form>
       </div> 
     );

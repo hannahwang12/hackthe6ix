@@ -32,6 +32,8 @@ app.get("/authenticate", async (req, res) => {
   //console.log(req);
 	let username = req.query.username;
 	let password = req.query.password;
+  let email = req.query.email;
+  user_identities.push(email);
 	user_identities.push(username);
 	user_identities.push(password);
 });
