@@ -16,8 +16,8 @@ class App extends Component {
     this.password = '';
   } 
 
-  signupSubmit = (user, pass) => {
-    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
+  signupSubmit = (user, pass, email) => {
+    axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
       this.results = response.data;
       // this.setState({searching: false});
       // this.setState({searched: true});
