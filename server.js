@@ -3,6 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const firebase = require('firebase');
 const cors = require('cors');
+const firebase_auth = require('./auth/firebase_auth.js');
+
 
 // Google Cloud Speech API
 //const mic = require('mic');
@@ -37,14 +39,7 @@ const port = process.env.PORT || 8080;
 // Gear icon in left sidebar > General > Add Firebase to your Web App
 // Don't bother with config variable
 // npm install firebase and import it
-firebase.initializeApp({
-  apiKey: "AIzaSyCfxOTiqUJ6k66ygoChsUdKN4o-Nr6nYJ8",
-  authDomain: "hackthe6ix-dd4d2.firebaseapp.com",
-  databaseURL: "https://hackthe6ix-dd4d2.firebaseio.com",
-  projectId: "hackthe6ix-dd4d2",
-  storageBucket: "hackthe6ix-dd4d2.appspot.com",
-  messagingSenderId: "1023103574623"
-});
+firebase.initializeApp(firebase_auth);
 
 // Reference to database, this is automatically the root
 const user_data = firebase.app().database().ref().child("user_data");
