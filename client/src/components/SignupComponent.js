@@ -21,23 +21,23 @@ class SignUpComponent extends Component {
   }
 
   handleChangeUser = (e) => {
-		this.setState({username: e.target.value});
+    this.setState({username: e.target.value});
   }
 
   handleChangePass = (e) => {
-		this.setState({password: e.target.value});
+    this.setState({password: e.target.value});
   }
 
   render() {
     return (
       <div style={{display: this.props.display}}>
-        <h1 className="title">Signup</h1>
+        <h3 className="title">claire</h3>
         <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe_l" display="none" frameBorder="0"></iframe>
-        <form id="signup" onSubmit={this.signupSubmit} className="login" target="dummyframe_l" autoComplete="off">
+        <form id="signup" onSubmit={this.signupSubmit} className="signup" target="dummyframe_l" autoComplete="off">
           <input name="email" className="loginField" placeholder="email" value={this.state.email} onChange={this.handleChangeEmail}/>
           <input name="username" className="loginField" placeholder="username" value={this.state.username} onChange={this.handleChangeUser}/>
           <input name="password" className="loginField" type="password" placeholder="password" value={this.password} onChange={this.handleChangePass}/>
-          <input type="submit" value="Submit" className="loginButton"/>
+          <input type="submit" value="Submit" className="login1"/>
         </form>
       </div> 
     );

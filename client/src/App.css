@@ -7,27 +7,148 @@
   align-items: center;
 }
 
+.frame {
+text-align: center;
+}
+
 .login {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #766699;
+  border-radius: 20px;
+  height: 250px;
+  width:250px;
+
+}
+
+.signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: right;
+  background-color: #2E294E;
+  border-radius: 20px;
+  height: 350px;
 }
 
 input {
   margin: 20px;
   padding: 10px;
+  border-radius: 20px;
+  line-height: 20px;
+
 }
 
 .loginButton {
   border: 1px solid darkgrey;
+  background-color: #D499B9;
+  color: white;
+  border-radius: 10px;
   margin: 20px;
-  padding: 10px;
+  padding: 5px;
+
 }
 
 .loginButton:hover {
   cursor: pointer;
 }
+
+.login1 {
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
+    background-color: #F9F0F7;
+    color:#868686;
+    border-width: 3px;
+    border-color: #D499B9;
+    font-weight: bold;
+     height: 100px;
+  	width: 220px;
+  	font-size: 18px;
+  	cursor: pointer;
+}
+
+.login1:hover {
+	
+    background-color: #C89CB4; 
+    color: #FFFFFF;
+   border-color: #E3BED2
+
+
+}
+
+.loginField {
+    
+    background-color: #FFFFFF;
+    color:#868686;
+    border-width: 2px;
+    border-color: #D499B9;
+    height: 100px;
+  	width: 200px;
+  	font-size: 14px
+}
+
+.signu {
+  background-color: #F9F0F7;
+  border-width: 1px;
+    border-color: #D499B9;
+  color: #868686;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 13px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.signu:hover {opacity: 1}
+
+
+.caretaker {
+  background-color: #F9F0F7;
+  border-width: 1px;
+    border-color: #D499B9;
+  color: #868686;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 13px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.caretaker:hover {opacity: 1}
+
+
+.back {
+  background-color: #F9F0F7;
+  border-width: 1px;
+    border-color: #D499B9;
+  color: #868686;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 13px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.back:hover {opacity: 1}
+
+
 
 .tag-cloud {
   flex: 1;
@@ -55,8 +176,8 @@ input {
 	background: #c01916;
 	color: white;
 	margin-top: 5px;
-  z-index: 100;
-  display: none;
+    z-index: 100;
+    display: none;
 	padding: 15px;
 	font-size: 14px;
 	line-height: 1;
@@ -88,12 +209,16 @@ input {
 	width: 30%;
 }
 
+
 body {
-  font-family: sans-serif;
+  font-family: "arial",sans-serif;
+  font-size: 25px;
+  color: white;
  -webkit-font-smoothing: antialiased;
  -moz-osx-font-smoothing: grayscale;
  text-rendering: optimizeLegibility;
  font-smooth: always;
   margin: 0;
   padding: 0;
+background-image: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%);
 }
