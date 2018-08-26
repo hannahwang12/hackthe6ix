@@ -11,6 +11,7 @@ class ChatbotContainer extends Component {
       blob: '',
       message: '',
       rerender: true,
+      continue: false,
     };
 //  this.messageEntity = '';
     this.botMessage = '';
@@ -75,11 +76,15 @@ class ChatbotContainer extends Component {
 
   messageSubmit = (e) => {
     e.preventDefault();
-    this.props.messageSubmit(this.state.message, this.props.index);
+    this.props.messageSubmit(this.state.message, this.props.index, this.state.continue);
   }
 
   handleChangeMessage = (e) => {
 		this.setState({message: e.target.value});
+  }
+
+  handleButtonClick = (e) => {
+		this.setState({continue: e.target.value});
   }
 
   // updateIndex = (sentiment, entity, yes) => {
@@ -113,31 +118,39 @@ class ChatbotContainer extends Component {
   //   console.log(this.index);
   // }
 
-  chatbot = (entity) => {
+  chatbot = (entity, name) => {
    // this.setState({botMessage: this.props.botMessage});
-    if (this.props.index == 0) {
-      this.botMessage = '1Hi _____, how was your day?'; 
+    var num = this.props.index;
+    if ((this.props.name != null || this.props.name) != "" && num == 0) {
+      num = 1;
+      name = this.props.name;
+    }
+    if (num == 0) {
+      this.botMessage = "Hi there, I'm Claire! What's your name?";
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 1) {
-      this.botMessage = 'Hi _____, how was your day?';
+    } else if (num == 1) {
+      this.botMessage = 'Hi ' + name + ', how was your day?';
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 2) {
-      this.botMessage = `That's great! Tell me more about the ${entity}!`;
+    } else if (num == 2) {
+      this.botMessage = `That's great! Tell me more about the ${entity[0].name}!`;
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 3) {
-      this.botMessage = `Aww sorry to hear that! Why don't you tell me a bit more about the ${entity}?`;
+    } else if (num == 3) {
+      this.botMessage = `Aww sorry to hear that! Why don't you tell me a bit more about the ${entity[0].name}?`;
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 4) {
+    } else if (num == 4) {
       this.botMessage = "That's interesting! Is there anything else you wanted to chat about?"; // yes or no
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 5) {
+    } else if (num == 5) {
       this.botMessage = "Aww don't worry, it's alright! Is there anything else you wanted to chat about?"; // yes or no
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 6) {
+    } else if (num == 6) {
       this.botMessage = "What's up?";
       this.setState({ rerender: !this.state.rerender });
-    } else if (this.props.index == 7) {
+    } else if (num == 7) {
       this.botMessage = "Okay, have a nice day! See you tomorrow!";
+      this.setState({ rerender: !this.state.rerender });
+    } else if (num == 8) {
+      this.botMessage = "Tell me more about your day!";
       this.setState({ rerender: !this.state.rerender });
     } else {
       this.botMessage = '';
@@ -163,14 +176,14 @@ class ChatbotContainer extends Component {
             onData={this.onData}
             strokeColor="#000000"
             backgroundColor="#FF4081" /> */}
-          <button onClick={this.startRecording} type="button">Start</button>
+          {/* <button onClick={this.startRecording} type="button">Start</button> */}
           <p>{this.botMessage}</p>
           <form id="messageBox" onSubmit={this.messageSubmit} className="messageBox" autoComplete="off">
             <input name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>
             {this.props.yesno ?
             <div>
-              <input type="submit" value="yes" className="yesnoButton"/>
-              <input type="submit" value="no" className="yesnoButton"/>
+              <input type="submit" name="yes" value="yes" className="yesnoButton" onClick={this.handleButtonClick}/>
+              <input type="submit" name="yes" value="no" className="yesnoButton" onClick={this.handleButtonClick}/>
             </div> : null}
             <input type="submit" value="send" className="sendButton"/>
           </form>

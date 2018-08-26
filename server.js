@@ -69,16 +69,24 @@ app.get("/authenticate", async (req, res) => {
 //app.post("/authenticate", async (req, res) => {
   let username = req.query.username;
   let password = req.query.password;
+  let name = "";
   //res.statusCode(200);
+  user_data.child(username).child("global").child("name").once('value', async function(data) {
+    if (data.val()) {
+      name = data.val();
+    }
+  })
   user_identities.once('value', async function(data) {
     var usernames = Object.keys(data.val());
     var exists = usernames.indexOf(username);
 
     if (exists > -1) {
       var auth = Object.values(Object.values(data.val())[exists])[0];
-      if (password === auth) {
+      if (password === auth && name === "") {
         res.status(200).send("valid");
         return;
+      } else if (password === auth && (name != "")) {
+        res.status(200).send("valid&" + name);
       } else {
         res.status(200).send("invalid");
         return;
@@ -364,7 +372,14 @@ app.get("/update", async (req, res) => {
 //   .catch(err => {
 //     console.error('ERROR:', err);
 //   });
-
+app.get("/name", async (req, res) => {
+  let user = req.query.user;
+  console.log(user)
+  let name = req.query.name;
+  console.log(name);
+  user_data.child(user).child("global").child("name").set(name);
+  res.sendStatus(200);
+})
 
 app.get("/message", async (req, res) => {
   console.log("get request")
@@ -395,9 +410,7 @@ app.get("/message", async (req, res) => {
   await NPLclient
     .analyzeEntities({document: document})
     .then(results => {
-      entity = results[0].entities[0];
-      entity = entity.name || null;
-
+      entity = results[0].entities;
       // console.log(`Text: ${message}`);
       // console.log(`Sentiment score: ${sentiment.score}`);
       // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);

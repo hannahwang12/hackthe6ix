@@ -16,6 +16,7 @@ class App extends Component {
       error: null,
       type: false, //none, senior, caregiver
       index: '0',
+      rerender: false,
     //  yesno: false,
     };
     this.url = "http://localhost:8080"
@@ -23,6 +24,7 @@ class App extends Component {
     this.password = '';
     this.sentiment = '';
     this.entity = '';
+    this.name = '';
     this.yesno = false;
     
   } 
@@ -41,8 +43,17 @@ class App extends Component {
   loginSubmit = (user, pass) => {
     axios.get(this.url + "/authenticate?username=" + user + "&password=" + pass).then(response => {
       var results = response.data;
+      console.log("Results: " + results);
       if (results === "valid") {
         this.setState({ loggedin: user, error: null, type: "senior" });
+        this.username = user;
+        this.setState({ rerender: !this.state.rerender });
+      } else if ((results.indexOf('&') > -1) && results != "invalid") {
+        this.setState({ loggedin: user, error: null, type: "senior" });
+        this.name = results.split('&')[1];
+        //console.log("Results: " + results);
+        this.username = user;
+        this.setState({ rerender: !this.state.rerender });
       } else {
         this.setState({ error: "Bad username or password!" });
       }
@@ -88,57 +99,63 @@ class App extends Component {
     });
   }
 
-  messageSubmit = (message, index) => {
-    console.log("messageSubmit: " + message)
-    axios.get(this.url + "/message?message=" + message + "&index=" + index).then(async response => {
+  messageSubmit = (message, index, yes) => {
+    //console.log("messageSubmit: " + message)
+    axios.get(this.url + "/message?message=" + message + "&index=" + index + "&yesno=" + yes).then(async response => {
       var results = response.data;
       var sentiment = results.sentiment;
       var entity = results.entity;
       this.entity = entity;
-      console.log("just before update");
-      await this.updateIndex(sentiment, entity, true); // ADD YES
+      if (entity.length < 1) {
+        this.setState({index: 8});
+      } else if (index == 0) {
+        this.entity = entity.filter((elem) => elem.type == "PERSON")[0];
+        await this.updateIndex(sentiment, entity, yes, this.entity.name); 
+      } else {
+        await this.updateIndex(sentiment, entity, yes);
+      }
     })
   }
 
-  updateIndex = (sentiment, entity, yes) => {
-    if (this.state.index == 0) {
-      console.log("set")
+  updateIndex = (sentiment, entity, yes, name) => {
+    if (this.state.index == 0 && name != null) {
+      console.log("okay")
+      axios.get(this.url + "/name?user=" + this.username + "&name=" + name)
       this.setState({index: 1});
-      console.log("after set")
-    } else if (this.state.index == 1) {
+    } else if (this.state.index == 1 || this.state.index == 8) {
       if (sentiment == 'positive') {
         this.setState({index: 2});// tell me more about entity
       } else {
         this.setState({index: 3});
       }
     } else if (this.state.index == 2 || this.state.index == 3) {
-    //  this.yesno({yesno: true});
+      this.yesno = true;
       if (sentiment == 'positive') {
         this.setState({index: 4});
       } else {
         this.setState({index: 5});
       }
     } else if (this.state.index == 4 || this.state.index == 5) {
-      this.yesno = true;
-      this.setState({index: 6});
-      // if (yes) {
-      //   this.setState({index: 6});
-      // } else {
-      //   this.setState({index: 7});
-      //   // call function to update firebase
-      //   return;
-      // }
-    } else if (this.state.index == 6) {
       this.yesno = false;
-      if (yes) {
-        // if (sentiment == 'positive') {
-        //   this.setState({index: 2}); // tell me more about entity
-        // } else {
-        //   this.setState({index: 3});
-        // }
+    //  this.setState({index: 6});
+      if (yes === 'yes') {
+        this.setState({index: 6});
       } else {
         this.setState({index: 7});
+        // call function to update firebase
+        return;
       }
+    } else if (this.state.index == 6) {
+      // this.yesno = false;
+      // if (yes) {
+        if (sentiment == 'positive') {
+          this.setState({index: 2}); // tell me more about entity
+        } else {
+          this.setState({index: 3});
+        }
+      // } else {
+      // this.setState({index: 7});
+      // }
       
     }
   }
@@ -189,7 +206,7 @@ class App extends Component {
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
-        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno}/>
+        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>
         <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
       </div> 
   
