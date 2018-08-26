@@ -208,15 +208,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/*this.state.type == "senior" or "caregiver" to determine which screen to show}*/}
-        <p style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}}>Caregiver view</p>
         <LoginComponent display={(this.state.dialog != "login" || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
         <LoginComponent display={(!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"} loginSubmit={this.caregiverLoginSubmit}/>
         <SignupComponent display={(this.state.dialog === "signup" && !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
-        <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" || this.state.loggedin)?"none":"block"}} className="loginButton">Sign up</button>
-        <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" && !this.state.loggedin)?"block":"none"}} className="loginButton">Back</button>
-        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
-        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
+        <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" || this.state.loggedin)?"none":"block"}} className="signu">Sign up</button>
+        <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" && !this.state.loggedin)?"block":"none"}} className="back">Back</button>
+        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"inline-block":"none"}} className="caretaker">Caretaker</button>
+        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"inline-block":"none"}} className="back">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
         <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>
         <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
