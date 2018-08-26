@@ -69,13 +69,14 @@ class DashboardContainer extends Component {
         <div className="dashboard">
           
           <div className="dashboardComponents">
-            <div className="overviewContainer">Overview</div>
-            <div className="graphContainer">Graph</div>
             <div className="wordCloudContainer">
               <WordCloudComponents words={this.state.words}/>
             </div>
+            <div className="graphContainer">
+              <h3>Sentiment Graph</h3>
+              <GraphComponent />
+            </div>
             
-            <GraphComponent />
           </div>
         </div>
         
