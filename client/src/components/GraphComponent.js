@@ -6,39 +6,32 @@ class GraphComponent extends Component {
     super(props);
     this.state = {
     };
-    
   }
 
   render() {
-    const words = this.props.words;
-    console.log('render')
-    console.log(words)
-    Object.keys(words).forEach((key) => {
-            console.log(key);
-            console.log(words[key]);
-            return this.iterateWords(key, words[key]);
-          })
+
+    const chart = (
+      <Chart
+        data={[
+          {
+            label: "Series 1",
+            data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7]]
+          },
+          {
+            label: "Series 2",
+            data: [[0, 3], [1, 1], [2, 5], [3, 6], [4, 4]]
+          }
+        ]}
+      >
+        <Axis primary type="time" />
+        <Axis type="linear" />
+        <Series type={Line} />
+      </Chart>
+    );
+
     return (
-      <div className="wordCloud">
-        <TagCloud 
-          className="tag-cloud"
-          style={{
-            fontFamily: 'sans-serif',
-            fontSize: 30,
-            fontWeight: 'bold',
-            fontStyle: 'italic',
-            color: 'blue',
-            padding: 5,
-            width: '100%',
-            height: '100%'
-          }}>
-          {Object.keys(words).forEach((key) => {
-            console.log(key);
-            console.log(words[key]);
-            return this.iterateWords(key, words[key]);
-          })}
-          <div>word cloud text</div>
-        </TagCloud>
+      <div>
+        {this.lineChart}
       </div>
     );
   }

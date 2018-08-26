@@ -3,6 +3,7 @@ import WordCloudComponents from '../components/WordCloudComponent.js';
 import randomColor from 'randomcolor';
 import axios from 'axios';
 import WordComponent from '../components/WordComponent.js';
+import GraphComponent from '../components/GraphComponent.js';
 
 class DashboardContainer extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class DashboardContainer extends Component {
               <WordCloudComponents words={this.state.words}/>
             </div>
             
-            <div>Graph</div>
+            <GraphComponent />
           </div>
         </div>
         
