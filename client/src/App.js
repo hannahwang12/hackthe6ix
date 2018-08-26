@@ -16,6 +16,7 @@ class App extends Component {
       error: null,
       type: false, //none, senior, caregiver
       index: '0',
+      words: {},
     //  yesno: false,
     };
     this.url = "http://localhost:8080"
@@ -24,7 +25,6 @@ class App extends Component {
     this.sentiment = '';
     this.entity = '';
     this.yesno = false;
-    
   } 
 
   signupSubmit = (user, pass, email) => {
@@ -79,6 +79,19 @@ class App extends Component {
       this.setState({dialog: "login", error: null});
     }
   }
+
+  // getWordFrequencies = async () => {
+  //   let words = {};
+  //   await axios.get(this.url + "/frequency").then(response => {
+  //     // console.log("hey");
+  //     // console.log(response);
+  //     console.log(response.data);
+  //     words = response.data;
+  //     this.setState({words: response.data});
+  //   });
+  //   console.log(words)
+  //   return words;
+  // }
 
   audioSubmit = () => {
     axios.get(this.url + "/audio").then(response => {
@@ -138,6 +151,9 @@ class App extends Component {
         // }
       } else {
         this.setState({index: 7});
+        axios.get(this.url + "/updatefirebase", async (req, res) => {
+          console.log('update firebase')
+        })
       }
       
     }
@@ -189,10 +205,9 @@ class App extends Component {
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
-        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno}/>
-        <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
+        {(this.state.loggedin && this.state.type === "senior")?<ChatbotContainer audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno}/>:null}
+        {(this.state.loggedin && this.state.type === "caregiver")?<DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"} getWordFrequencies={this.getWordFrequencies} words={this.state.words}/>:null}
       </div> 
-  
     );
   }
 }
