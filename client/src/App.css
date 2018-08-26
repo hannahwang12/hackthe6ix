@@ -15,6 +15,14 @@ h1 {
   font-size: 100px;
 }
 
+h2 {
+  margin: 0;
+  margin-top: 24px;
+  font-weight: 300;
+  font-family: Raleway;
+  font-size: 50px;
+}
+
 b {
   font-weight: 700;
 }
@@ -236,7 +244,6 @@ textarea {
   align-items: bottom;
   justify-content: center;
 }
-
 
 .sendButton {
   border: 1px solid darkgrey;

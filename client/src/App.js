@@ -33,7 +33,7 @@ class App extends Component {
     axios.get(this.url + "/signup?username=" + user + "&password=" + pass + "&email=" + email).then(response => {
       var results = response.data;
       if (results === "exists") {
-        this.setState({ error: "A user with this username already exists!"})
+        this.setState({ error: "Someone else has already picked that name!"})
       }
       // this.setState({searching: false});
       // this.setState({searched: true});
@@ -55,7 +55,7 @@ class App extends Component {
         this.username = user;
         this.setState({ rerender: !this.state.rerender });
       } else {
-        this.setState({ error: "Bad username or password!" });
+        this.setState({ error: "Something's wrong with your login details!" });
       }
       // this.setState({searching: false});
       // this.setState({searched: true});
@@ -68,7 +68,7 @@ class App extends Component {
       if (results === "valid") {
         this.setState({ loggedin: user, error: null, type: "caregiver" });
       } else {
-        this.setState({ error: "Bad username or password!" });
+        this.setState({ error: "Something's wrong with your login details!" });
       }
       // this.setState({searching: false});
       // this.setState({searched: true});
@@ -208,12 +208,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginComponent display={(this.state.dialog != "login" || this.state.loggedin)?"none":"block"} loginSubmit={this.loginSubmit}/>
-        <LoginComponent display={(!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"} loginSubmit={this.caregiverLoginSubmit}/>
+        <LoginComponent display={(this.state.dialog != "login" || this.state.loggedin)?"none":"block"} caredisplay={(!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"} loginSubmit={this.loginSubmit}/>
+        <LoginComponent display={(!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"} caredisplay={(!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"} loginSubmit={this.caregiverLoginSubmit}/>
         <SignupComponent display={(this.state.dialog === "signup" && !this.state.loggedin)?"block":"none"} signupSubmit={this.signupSubmit}/>
         <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" || this.state.loggedin)?"none":"block"}} className="signu">Sign up</button>
         <button onClick={this.signUp} style={{display: (this.state.dialog === "signup" && !this.state.loggedin)?"block":"none"}} className="back">Back</button>
-        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"inline-block":"none"}} className="caretaker">Caretaker</button>
+        <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"inline-block":"none"}} className="caretaker">I'm a caregiver</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"inline-block":"none"}} className="back">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
         <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>

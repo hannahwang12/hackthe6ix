@@ -121,7 +121,7 @@ class ChatbotContainer extends Component {
   chatbot = (entity, name) => {
    // this.setState({botMessage: this.props.botMessage});
     var num = this.props.index;
-    if ((this.props.name != null || this.props.name) != "" && num == 0) {
+    if ((this.props.name != null && this.props.name != "") && num == 0) {
       num = 1;
       name = this.props.name;
     }
