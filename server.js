@@ -73,13 +73,14 @@ app.get("/authenticate", async (req, res) => {
   //res.statusCode(200);
   user_data.child(username).child("global").child("name").once('value', async function(data) {
     if (data.val()) {
+      console.log("Data: " + data.val());
       name = data.val();
     }
   })
   user_identities.once('value', async function(data) {
     var usernames = Object.keys(data.val());
     var exists = usernames.indexOf(username);
-
+    console.log("Name: " + name);
     if (exists > -1) {
       var auth = Object.values(Object.values(data.val())[exists])[0];
       if (password === auth && name === "") {
@@ -196,11 +197,6 @@ app.get("/audio", async (req, res) => {
   //   console.error('ERROR:', err);  
   // });
 });
-
-app.get("/updatefirebase", async (req, res) => {
-  user_data.child(user).child(time).push(date);
-
-})
 
 
 
