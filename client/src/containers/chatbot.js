@@ -179,13 +179,13 @@ class ChatbotContainer extends Component {
           {/* <button onClick={this.startRecording} type="button">Start</button> */}
           <p style={{fontSize: '50px', marginLeft: '80px', marginRight: '80px',}}>{this.botMessage}</p>
           <form id="messageBox" onSubmit={this.messageSubmit} className="messageBox" autoComplete="off">
-            <textarea rows="1" cols="50" wrap="hard" style={{fontSize: '20px', height: '200px'}} name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>
+            {this.props.yesno ? null : <textarea rows="1" cols="50" wrap="hard" style={{fontSize: '20px', height: '200px'}} name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>}
             {this.props.yesno ?
             <div>
               <input type="submit" name="yes" value="yes" className="yesnoButton" onClick={this.handleButtonClick}/>
               <input type="submit" name="yes" value="no" className="yesnoButton" onClick={this.handleButtonClick}/>
             </div> : null}
-            <input type="submit" value="send" className="sendButton"/>
+            {this.props.yesno ? null : <input type="submit" value="send" className="sendButton"/>}
           </form>
           {/*<button onClick={this.stopRecording} type="button">Stop</button>*/}
           {/* {<button onClick={this.test}>Test</button>} */}
