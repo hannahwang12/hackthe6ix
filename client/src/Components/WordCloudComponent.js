@@ -55,7 +55,7 @@ class WordCloudComponent extends Component {
 
   iterateWords = (word) => {
     console.log(Object.values(word)[0][1]);
-    return (<div style={{fontSize: (Object.values(word)[0][0] * 3), 
+    return (<div style={{fontSize: (Object.values(word)[0][0] * 4), 
                          color: ((Object.values(word)[0][1]>0)?"#FFFF99":(Object.values(word)[0][1]==0?"#D3D3D3":"#FF0000")),
                          opacity: 0.8}}>{Object.keys(word)[0]}</div>);
   }
