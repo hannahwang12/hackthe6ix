@@ -1,37 +1,12 @@
 import React, { Component } from 'react';
-import TagCloud from 'react-tag-cloud';
-import randomColor from 'randomcolor';
-import WordComponent from '../components/WordComponent.js';
+import { Chart, Axis, Series, Tooltip, Cursor, Line } from "react-charts";
 
-const styles = {
-  large: {
-    fontSize: 60,
-    fontWeight: 'bold'
-  },
-  small: {
-    opacity: 0.7,
-    fontSize: 16
-  },
-  color: () => randomColor({
-    hue: 'blue'
-  }),
-};
-
-class WordCloudComponent extends Component {
+class GraphComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
     };
     
-  }
-
-  getWordFrequencies = () => {
-    const words = this.props.getWordFrequencies();
-  }
-
-  iterateWords = (word, freq) => {
-    console.log('iterate')
-    return <WordComponent word={word} freq={freq}/>
   }
 
   render() {
@@ -69,4 +44,4 @@ class WordCloudComponent extends Component {
   }
 }
 
-export default WordCloudComponent;
+export default GraphComponent;

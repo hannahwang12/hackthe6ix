@@ -185,7 +185,7 @@ app.get("/audio", async (req, res) => {
   //   console.log(`Transcription: `, transcription);
   // })
   // .catch(err => {
-  //   console.error('ERROR:', err);
+  //   console.error('ERROR:', err);  
   // });
 });
 
@@ -365,10 +365,13 @@ app.get("/update", async (req, res) => {
 //     console.error('ERROR:', err);
 //   });
 
+let messageStr = '';
 
 app.get("/message", async (req, res) => {
-  console.log("get request")
   const message = req.query.message;
+  messageStr += message;
+  messageStr += ' ';
+  console.log(messageStr);
   const document = {
     content: message,
     type: 'PLAIN_TEXT',
@@ -417,11 +420,19 @@ app.get("/message", async (req, res) => {
   } else {
     res.status(200).send({sentiment: "negative", entity});
   }
-})
+});
 
-
-
-
+app.get("/frequency", async(req, res) =>{
+  var user = req.query.user;
+  user = "user";
+  var response = {};
+  await user_data.child(user).once('value', async function(data) {
+    response = data.val().global.words;
+    // console.log("!!!");
+    // console.log(response);
+  });
+  res.status(200).json(response);
+});
 
 app.listen(port);
 
