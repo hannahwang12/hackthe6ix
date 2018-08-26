@@ -64,15 +64,15 @@ class DashboardContainer extends Component {
 
     return (
       <div>
+        <h2>Dashboard</h2>
         <div className="dashboard">
-          <h1>Dashboard</h1>
+          
           <div className="dashboardComponents">
-            <div>Overview</div>
+            <div className="overviewContainer">Overview</div>
+            <div className="graphContainer">Graph</div>
             <div className="wordCloudContainer">
               <WordCloudComponents words={this.state.words}/>
             </div>
-            
-            <div>Graph</div>
           </div>
         </div>
         
