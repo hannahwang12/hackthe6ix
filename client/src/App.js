@@ -17,6 +17,7 @@ class App extends Component {
       type: false, //none, senior, caregiver
       index: '0',
       rerender: false,
+      words: {},
     //  yesno: false,
     };
     this.url = "http://localhost:8080"
@@ -26,7 +27,6 @@ class App extends Component {
     this.entity = '';
     this.name = '';
     this.yesno = false;
-    
   } 
 
   signupSubmit = (user, pass, email) => {
@@ -91,6 +91,19 @@ class App extends Component {
     }
   }
 
+  // getWordFrequencies = async () => {
+  //   let words = {};
+  //   await axios.get(this.url + "/frequency").then(response => {
+  //     // console.log("hey");
+  //     // console.log(response);
+  //     console.log(response.data);
+  //     words = response.data;
+  //     this.setState({words: response.data});
+  //   });
+  //   console.log(words)
+  //   return words;
+  // }
+
   audioSubmit = () => {
     axios.get(this.url + "/audio").then(response => {
       this.results = response.data;
@@ -142,7 +155,6 @@ class App extends Component {
         this.setState({index: 6});
       } else {
         this.setState({index: 7});
-        // call function to update firebase
         return;
       }
     } else if (this.state.index == 6) {
@@ -209,7 +221,6 @@ class App extends Component {
         <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>
         <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
       </div> 
-  
     );
   }
 }
