@@ -34,8 +34,8 @@ class DashboardContainer extends Component {
 // }
   
   componentDidMount() {
-    axios.get(this.url + "/frequency?user=" + this.user).then(async response => {
-      
+    axios.get(this.url + "/frequency?user=" + this.props.username).then(async response => {
+      console.log(response.data); 
     })
   }
 
@@ -44,8 +44,12 @@ class DashboardContainer extends Component {
   }
   
   render() {
-    // var words = {};
-    // const response = axios.get(this.url + "/frequency").then(async response => {
+    var words =  {passenger: 10,
+    ships: 2,
+    North: 3,
+    Atlantic: 10,
+    crossing: 1 }
+        // const response = axios.get(this.url + "/frequency").then(async response => {
     //   // console.log("hey");
     //   // console.log(response);
     //   console.log(response)
@@ -60,11 +64,13 @@ class DashboardContainer extends Component {
     console.log(this.state.words)
 
     return (
-      <div style={{display: this.props.display}}>
+      <div>
+        <h2>Dashboard</h2>
         <div className="dashboard">
-          <h1>Dashboard</h1>
+          
           <div className="dashboardComponents">
-            <div>Overview</div>
+            <div className="overviewContainer">Overview</div>
+            <div className="graphContainer">Graph</div>
             <div className="wordCloudContainer">
               <WordCloudComponents words={this.state.words}/>
             </div>
