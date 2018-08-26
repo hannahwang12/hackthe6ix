@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
 import WordComponent from '../components/WordComponent.js';
+import words from '../components/words.json'
 
 const styles = {
   large: {

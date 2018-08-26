@@ -218,8 +218,9 @@ class App extends Component {
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog != "caregiver")?"block":"none"}} className="loginButton">Caretaker?</button>
         <button onClick={this.display_caretaker} style={{display: (!this.state.loggedin && this.state.dialog === "caregiver")?"block":"none"}} className="loginButton">Back</button>
         <p style={{display: this.state.error?"block":"none"}}>{this.state.error?this.state.error:"null"}</p>
-        <ChatbotContainer display={(this.state.loggedin && this.state.type === "senior")?"block":"none"} audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>
-        <DashboardContainer display={(this.state.loggedin && this.state.type === "caregiver")?"flex":"none"}/>
+
+        {(this.state.loggedin && this.state.type === "senior")?<ChatbotContainer audioSubmit={this.audioSubmit} messageSubmit={this.messageSubmit} messageSentiment={this.sentiment} messageEntity={this.entity} index={this.state.index} yesno={this.yesno} name={this.name}/>:null}
+        {(this.state.loggedin && this.state.type === "caregiver")?<DashboardContainer username={this.username}/>:null}
       </div> 
     );
   }
