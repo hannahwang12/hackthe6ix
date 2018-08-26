@@ -177,9 +177,9 @@ class ChatbotContainer extends Component {
             strokeColor="#000000"
             backgroundColor="#FF4081" /> */}
           {/* <button onClick={this.startRecording} type="button">Start</button> */}
-          <p>{this.botMessage}</p>
+          <p style={{fontSize: '50px', marginLeft: '80px', marginRight: '80px',}}>{this.botMessage}</p>
           <form id="messageBox" onSubmit={this.messageSubmit} className="messageBox" autoComplete="off">
-            <input name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>
+            <textarea rows="1" cols="50" wrap="hard" style={{fontSize: '20px', height: '200px'}} name="message" className="message" placeholder="type a message..." onChange={this.handleChangeMessage}/>
             {this.props.yesno ?
             <div>
               <input type="submit" name="yes" value="yes" className="yesnoButton" onClick={this.handleButtonClick}/>

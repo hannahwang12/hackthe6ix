@@ -26,7 +26,8 @@ class CGLoginComponent extends Component {
   render() {
     return (
       <div style={{display: this.props.display}}>
-        <h1 className="title">HT6 Chatbot</h1>
+        <h1 className="title">cl<b>ai</b>re</h1>
+        <p>for families</p>
         <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe_s" display="none" frameBorder="0"></iframe>
         <form id="login" onSubmit={this.loginSubmit} className="login" target="dummyframe_s" autoComplete="off"> 
           <input name="username" className="loginField" placeholder="username" value={this.state.username} onChange={this.handleChangeUser}/>
