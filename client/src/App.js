@@ -134,6 +134,7 @@ class App extends Component {
     if (this.state.index == 0 && name != null) {
       console.log("okay")
       axios.get(this.url + "/name?user=" + this.username + "&name=" + name)
+      this.name = name;
       this.setState({index: 1});
     } else if (this.state.index == 1 || this.state.index == 8) {
       if (sentiment == 'positive') {

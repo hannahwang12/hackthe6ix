@@ -19,18 +19,26 @@ const styles = {
 };
 
 const words = [
-  ["1912": 10],
-  ["At": 10],
-  ["Atlantic": 10],
-  ["But": 10],
-  ["From": 10],
-  ["North": 10],  
-  ["With": 10],
-  ["back": 10],
-  ["been": 20],
-  ["business": 10],
-  ["cat": 9],
-  ["century": 10],
+  {"dream": [18, 0.8]},
+  {"dog": [5, 0]},
+  {"time": [10, 0.1]},
+  {"alone": [8, -0.6]},
+  {"weeks": [10, 0]},
+  {"waiting": [16, -0.3]},  
+  {"happy": [6, 0.8]},
+  {"family": [21, 0.8]},
+  {"sad": [12, -0.8]},
+  {"summer": [15, 0]},
+  {"pet": [7, 0]},
+  {"love": [3, 0.9]},
+  {"man": [3, 0]},
+  {"garden": [5, 0.2]},
+  {"wonder": [2, 0.5]},
+  {"miss": [9, -0.4]},
+  {"regret": [2, -0.8]},
+  {"wish": [4, 0.1]},
+  {"forgot": [8, 0]},
+  {"said": [22, 0]},
 ]
 
 class WordCloudComponent extends Component {
@@ -46,7 +54,10 @@ class WordCloudComponent extends Component {
   // }
 
   iterateWords = (word) => {
-    return (<div style={{fontSize: word[1] * 2 }}>{word[0]}</div>);
+    console.log(Object.values(word)[0][1]);
+    return (<div style={{fontSize: (Object.values(word)[0][0] * 3), 
+                         color: ((Object.values(word)[0][1]>0)?"#FFFF99":(Object.values(word)[0][1]==0?"#D3D3D3":"#FF0000")),
+                         opacity: 0.8}}>{Object.keys(word)[0]}</div>);
   }
 
   render() {

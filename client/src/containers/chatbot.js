@@ -21,7 +21,7 @@ class ChatbotContainer extends Component {
   componentWillReceiveProps = async (nextProps) => {
     await this.setState({ data: nextProps.data });
     console.log(this.props.messageEntity);
-    await this.chatbot(this.props.messageEntity);
+    await this.chatbot(this.props.messageEntity, this.props.name);
   }
 
   /*
