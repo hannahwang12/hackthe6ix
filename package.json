@@ -23,7 +23,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "firebase": "^5.4.1",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.21",
     "node-record-lpcm16": "^0.3.1",
     "path": "^0.12.7",
